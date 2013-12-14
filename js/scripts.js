@@ -5,6 +5,14 @@ $(function() {
         return cent + 90;
     }
 
+    app.isPositiveSignal = function(cent) {
+        if (cent >= -5 && cent <= 5) {
+            return true;
+        }
+
+        return false;
+    }
+
     app.Arrow = {
         id: '#arrow',
 
@@ -15,22 +23,25 @@ $(function() {
     }
 
     app.ScaleZeroMark = {
-        id: '#zero',
-
-        isPositive: function(cent)
-        {
-            if (cent >= -5 && cent <= 5) {
-                return true;
-            }
-
-            return false;
-        },
+        id: '#zero',   
 
         setCent: function(cent) {
-            if (this.isPositive(cent)) {
+            if (app.isPositiveSignal(cent)) {
                 $(this.id).addClass('active');
             } else {
                 $(this.id).removeClass('active');
+            }
+        }
+    }
+
+    app.TabloNote = {
+        id: '#note',
+
+        setSignalStatus: function(cent) {
+            if (app.isPositiveSignal(cent)) {
+                $(this.id).addClass('positive').removeClass('negative');
+            } else {
+                $(this.id).addClass('negative').removeClass('positive');
             }
         }
     }
@@ -51,5 +62,6 @@ $(function() {
         }
         app.Arrow.setCent(i);
         app.ScaleZeroMark.setCent(i);
+        app.TabloNote.setSignalStatus(i);
     }, 50);
 });
