@@ -26,19 +26,19 @@
     top: 200px;
 }
 
-#tablo .none {
+.none {
     background: radial-gradient(#3c3c3c, #272727);
 }
 
-#tablo .positive {
+.positive {
     background: radial-gradient(#35852e, #272727);
 }
 
-#tablo .negative {
+.negative {
     background: radial-gradient(#f74d02, #272727);
 }
 
-#scale .mark {
+.mark {
     width: 40px;
     height: 5px;
     background-image: url('../img/scale_mark.png');
@@ -48,7 +48,11 @@
     top: 70px;
 }
 
-#scale #zero {
+.active {
+    background-image: url('../img/scale_zero_active_mark.png') !important;
+}
+
+#zero {
     width: 50px;
     margin-left: -25px;
     background-image: url('../img/scale_zero_mark.png');
@@ -104,7 +108,7 @@
     left: 50%;
     top: 225px;
     margin-left: -150px;
-    -webkit-transform: rotate(90deg);
+    -webkit-transform: rotate(140deg);
 }
 
 #fretboard table {
