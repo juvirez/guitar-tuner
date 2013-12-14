@@ -1,5 +1,5 @@
 $(function() {
-    var app = app || {
+    app = app || {
         Models: {},
         Collections: {},
         Views: {}
