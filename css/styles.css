@@ -19,6 +19,7 @@
     height: 50px;
     -moz-border-radius: 25px;
     -webkit-border-radius: 25px;
+    -o-border-radius: 25px;
     border-radius: 25px;
     position: relative;
     left: 50%;
@@ -57,47 +58,68 @@
     margin-left: -25px;
     background-image: url('../img/scale_zero_mark.png');
     -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
 }
 
 #scale #n10 {
     -webkit-transform: translateX(-28px) translateY(2px) rotate(80deg);
-    /*-moz-transform: translatex(-100px) translatey(50px) rotate(50deg);*/
+    -moz-transform: translateX(-28px) translateY(2px) rotate(80deg);
+    -o-transform: translateX(-28px) translateY(2px) rotate(80deg);
 }
 
 #scale #n20 {
     -webkit-transform: translateX(-54px) translateY(8px) rotate(70deg);
+    -moz-transform: translateX(-54px) translateY(8px) rotate(70deg);
+    -o-transform: translateX(-54px) translateY(8px) rotate(70deg);
 }
 
 #scale #n30 {
     -webkit-transform: translateX(-80px) translateY(18px) rotate(60deg);
+    -moz-transform: translateX(-80px) translateY(18px) rotate(60deg);
+    -o-transform: translateX(-80px) translateY(18px) rotate(60deg);
 }
 
 #scale #n40 {
     -webkit-transform: translateX(-102px) translateY(34px) rotate(50deg);
+    -moz-transform: translateX(-102px) translateY(34px) rotate(50deg);
+    -o-transform: translateX(-102px) translateY(34px) rotate(50deg);
 }
 
 #scale #n50 {
     -webkit-transform: translateX(-120px) translateY(54px) rotate(40deg);
+    -moz-transform: translateX(-120px) translateY(54px) rotate(40deg);
+    -o-transform: translateX(-120px) translateY(54px) rotate(40deg);
 }
 
 #scale #p10 {
     -webkit-transform: translateX(28px) translateY(2px) rotate(-80deg);
+    -moz-transform: translateX(28px) translateY(2px) rotate(-80deg);
+    -o-transform: translateX(28px) translateY(2px) rotate(-80deg);
 }
 
 #scale #p20 {
     -webkit-transform: translateX(54px) translateY(8px) rotate(-70deg);
+    -moz-transform: translateX(54px) translateY(8px) rotate(-70deg);
+    -o-transform: translateX(54px) translateY(8px) rotate(-70deg);
 }
 
 #scale #p30 {
     -webkit-transform: translateX(80px) translateY(18px) rotate(-60deg);
+    -moz-transform: translateX(80px) translateY(18px) rotate(-60deg);
+    -o-transform: translateX(80px) translateY(18px) rotate(-60deg);
 }
 
 #scale #p40 {
     -webkit-transform: translateX(102px) translateY(34px) rotate(-50deg);
+    -moz-transform: translateX(102px) translateY(34px) rotate(-50deg);
+    -o-transform: translateX(102px) translateY(34px) rotate(-50deg);
 }
 
 #scale #p50 {
     -webkit-transform: translateX(120px) translateY(54px) rotate(-40deg);
+    -moz-transform: translateX(120px) translateY(54px) rotate(-40deg);
+    -o-transform: translateX(120px) translateY(54px) rotate(-40deg);
 }
 
 #arrow {
@@ -109,6 +131,8 @@
     top: 225px;
     margin-left: -150px;
     -webkit-transform: rotate(140deg);
+    -moz-transform: rotate(140deg);
+    -o-transform: translateX(120px) translateY(54px) rotate(-40deg);
 }
 
 #fretboard table {

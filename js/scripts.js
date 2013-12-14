@@ -19,6 +19,8 @@ $(function() {
         setCent: function(cent) {
             var angle = app.getAngleForCent(cent);
             $(this.id).css('-webkit-transform', 'rotate(' + angle + 'deg)');
+            $(this.id).css('-moz-transform', 'rotate(' + angle + 'deg)');
+            $(this.id).css('-o-transform', 'rotate(' + angle + 'deg)');
         }
     }
 
