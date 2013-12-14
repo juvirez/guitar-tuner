@@ -1,50 +1,67 @@
-app = app || {Models: {}, Collections: {}};
+app = app || {};
 
-(function() {
-	var SemiTone = Backbone.Model.extend({
-		defaults: {
-			freq: 0,
-			note: '#',
-			octave: 0
-		},
-		diffFreq: function(curFreq) {
-			return (this.get('freq') - curFreq);
-		},
-		constructor: function(params) {
-			Backbone.Model.apply(this, {
-				'freq': params[0],
-				'note': params[1],
-				'octave': params[2]});
-			return this;
+app.tones = {
+
+	getCurTone: function(curFreq) {
+		var semitones = [
+			[73.91, 'D'],
+			[77.78, 'D#'],	
+			[82.41, 'E'],	
+			[87.31, 'F'],	
+			[92.50, 'F#'],	
+			[98.00, 'G'],	
+			[103.80, 'G#'],
+			[110.00, 'A'],	
+			[116.54, 'A#'],	
+			[123.48, 'H'],	
+			[130.82, 'C'],	
+			[138.59, 'C#'],	
+			[147.83, 'D'],
+			[155.56, 'D#'],
+			[164.81, 'E'],	
+			[174.62, 'F'],	
+			[185.00, 'F#'],
+			[196.00, 'G'],	
+			[207.00, 'G#'],
+			[220.00, 'A'],	
+			[233.08, 'A#'],
+			[246.96, 'H'],
+			[261.63, 'C'],
+			[277.18, 'C#'],
+			[293.66, 'D'],
+			[311.13, 'D#'],
+			[329.63, 'E'],
+			[349.23, 'F'],
+			[369.99, 'F#'],
+			[392.00, 'G'],
+			[415.30, 'G#'],
+			[440.00, 'A']
+		];
+
+		var minDiffI = 0;
+		var diff = 22000;
+		for (var i = 1; i < semitones.length; i++) {
+			var curDiff = Math.abs(semitones[i][0] - curFreq);
+			if (diff > curDiff) {
+				minDiffI = i;
+				diff = curDiff;
+			}
 		}
-	});
 
-	var SemiTones = Backbone.Collection.extend({
-		model: SemiTone,
-		getCurSemiTone: function(curFreq) {
-			var arr = _.reduce(this, function(mem, cur) {
-				var absDiff = Math.abs(cur.diffFreq(curFreq));
-				if (absDiff < mem[1]) {
-					return [cur, absDiff];
-				}
-			}, [null, 22000]);
-			return arr[0];
+		// calc cents:
+		var originalFreq = semitones[minDiffI][0];
+		var full = 0;
+		var path = 0;
+		if (curFreq <= originalFreq) {
+			full = semitones[minDiffI - 1][0] - originalFreq;
+			path = originalFreq - curFreq;
+		} else {
+			full = semitones[minDiffI + 1][0] - originalFreq;
+			path = curFreq - originalFreq;
 		}
-	});
+		var cents = Math.round(path * 50 / full);
 
-	app.SemiTones = new SemiTones();
-	app.SemiTones.reset([
-		[77.78, 'D#'],	[155.56, 'D#'],	[311.13, 'D#'],
-		[82.41, 'E'],	[164.81, 'E'],	[329.63, 'E'],
-		[87.31, 'F'],	[174.62, 'F'],	[349.23, 'F'],
-		[92.50, 'F#'],	[185.00, 'F#'],	[369.99, 'F#'],
-		[98.00, 'G'],	[196.00, 'G'],	[392.00, 'G'],
-		[103.80, 'G#'],	[207.00, 'G#'],	[415.30, 'G#'],
-		[110.00, 'A'],	[220.00, 'A'],	[440.00, 'A'],
-		[116.54, 'A#'],	[233.08, 'A#'],
-		[123.48, 'H'],	[246.96, 'H'],
-		[130.82, 'C'],	[261.63, 'C'],
-		[138.59, 'C#'],	[277.18, 'C#'],
-		[147.83, 'D'],	[293.66, 'D']
-	]);
-})();
+		return [cents, semitones[minDiffI][0], semitones[minDiffI][1]];
+	},
+
+};
