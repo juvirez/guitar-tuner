@@ -51,6 +51,6 @@ app.mic = {
 $(function() {
 	app.mic.startAudition();
 	setInterval(function() {
-	//	console.log(app.mic.getFrequency());
+		console.log(app.mic.getFrequency());
 	}, 500);
 });

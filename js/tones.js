@@ -2,10 +2,9 @@ app = app || {};
 
 app.tones = {
 
-	getCurTone: function(curFreq) {
-		var semitones = [
+	semitones: [
 			[73.91, 'D'],
-			[77.78, 'D#'],	
+			[77.78, 'D#'],
 			[82.41, 'E'],	
 			[87.31, 'F'],	
 			[92.50, 'F#'],	
@@ -36,12 +35,16 @@ app.tones = {
 			[392.00, 'G'],
 			[415.30, 'G#'],
 			[440.00, 'A']
-		];
+		],
+
+	getCurTone: function() {
+
+		var curFreq = app.mic.getFrequency();
 
 		var minDiffI = 0;
 		var diff = 22000;
-		for (var i = 1; i < semitones.length; i++) {
-			var curDiff = Math.abs(semitones[i][0] - curFreq);
+		for (var i = 1; i < this.semitones.length; i++) {
+			var curDiff = Math.abs(this.semitones[i][0] - curFreq);
 			if (diff > curDiff) {
 				minDiffI = i;
 				diff = curDiff;
@@ -49,19 +52,31 @@ app.tones = {
 		}
 
 		// calc cents:
-		var originalFreq = semitones[minDiffI][0];
+		var originalFreq = this.semitones[minDiffI][0];
 		var full = 0;
 		var path = 0;
 		if (curFreq <= originalFreq) {
-			full = semitones[minDiffI - 1][0] - originalFreq;
+			full = this.semitones[minDiffI - 1][0] - originalFreq;
 			path = originalFreq - curFreq;
 		} else {
-			full = semitones[minDiffI + 1][0] - originalFreq;
+			full = this.semitones[minDiffI + 1][0] - originalFreq;
 			path = curFreq - originalFreq;
 		}
 		var cents = Math.round(path * 50 / full);
 
-		return [cents, semitones[minDiffI][0], semitones[minDiffI][1]];
+		return [cents, curFreq, this.semitones[minDiffI][0], this.semitones[minDiffI][1]];
 	},
 
+	getFretboardTunes: function(startHz) {
+		var fletboard = [];
+		for (var i = 0; i < this.semitones.length; i++) {
+			if (this.semitones[i] >= startHz) {
+				fletboard.push(this.semitones[i]);
+			}
+			if (fletboard.length == 4) {
+				break;
+			}
+		}
+		return fletboard;
+	}
 };
