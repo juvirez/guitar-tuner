@@ -1,0 +1,119 @@
+#mainbox
+{
+    position: absolute;
+    width: 97%;
+    padding: 10px;
+}
+
+#tablo {
+    background-color: #3c3c3c;
+    width: 400px;
+    height: 300px;
+    left: 50%;
+    margin-left: -200px;
+    position: relative;
+}
+
+#tablo #note {
+    width: 50px;
+    height: 50px;
+    -moz-border-radius: 25px;
+    -webkit-border-radius: 25px;
+    border-radius: 25px;
+    position: relative;
+    left: 50%;
+    margin-left: -25px;
+    top: 200px;
+}
+
+#tablo .none {
+    background: radial-gradient(#3c3c3c, #272727);
+}
+
+#tablo .positive {
+    background: radial-gradient(#35852e, #272727);
+}
+
+#tablo .negative {
+    background: radial-gradient(#f74d02, #272727);
+}
+
+#scale .mark {
+    width: 40px;
+    height: 5px;
+    background-image: url('../img/scale_mark.png');
+    position: absolute;
+    left: 50%;
+    margin-left: -20px;
+    top: 70px;
+}
+
+#scale #zero {
+    width: 50px;
+    margin-left: -25px;
+    background-image: url('../img/scale_zero_mark.png');
+    -webkit-transform: rotate(90deg);
+}
+
+#scale #n10 {
+    -webkit-transform: translateX(-28px) translateY(2px) rotate(80deg);
+    /*-moz-transform: translatex(-100px) translatey(50px) rotate(50deg);*/
+}
+
+#scale #n20 {
+    -webkit-transform: translateX(-54px) translateY(8px) rotate(70deg);
+}
+
+#scale #n30 {
+    -webkit-transform: translateX(-80px) translateY(18px) rotate(60deg);
+}
+
+#scale #n40 {
+    -webkit-transform: translateX(-102px) translateY(34px) rotate(50deg);
+}
+
+#scale #n50 {
+    -webkit-transform: translateX(-120px) translateY(54px) rotate(40deg);
+}
+
+#scale #p10 {
+    -webkit-transform: translateX(28px) translateY(2px) rotate(-80deg);
+}
+
+#scale #p20 {
+    -webkit-transform: translateX(54px) translateY(8px) rotate(-70deg);
+}
+
+#scale #p30 {
+    -webkit-transform: translateX(80px) translateY(18px) rotate(-60deg);
+}
+
+#scale #p40 {
+    -webkit-transform: translateX(102px) translateY(34px) rotate(-50deg);
+}
+
+#scale #p50 {
+    -webkit-transform: translateX(120px) translateY(54px) rotate(-40deg);
+}
+
+#arrow {
+    width: 300px;
+    height: 3px;
+    background-image: url('../img/arrow.png');
+    position: absolute;
+    left: 50%;
+    top: 225px;
+    margin-left: -150px;
+    -webkit-transform: rotate(90deg);
+}
+
+#fretboard table {
+    background-image: url('../img/fretboard.png');
+    width: 800px;
+    height: 221px;
+    position: relative;
+    bottom: 0;
+    left: 50%;
+    margin-left: -400px;
+    margin-top: 20px;
+}
