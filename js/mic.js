@@ -28,10 +28,14 @@ app.mic = {
 			that.fft = new FFT(2 * that.bufferSize, that.sampleRate);
 			var audioContext = new AudioContext();
 			var audioSource = audioContext.createMediaStreamSource(stream);
-			var tuner = audioContext.createJavaScriptNode(that.bufferSize, 1, 1);
+			audioContext.createScriptProcessor = (
+				audioContext.createJavaScriptNode ||
+				audioContext.createScriptProcessor);
+			var tuner = audioContext.createScriptProcessor(that.bufferSize, 1, 1);
 			tuner.onaudioprocess = that.audioProcess;
 			audioSource.connect(tuner);
 			tuner.connect(audioContext.destination);
+			audioSource.connect(audioContext.destination);
 		}, function(error) {
 			alert("getMedia Error: ", error);
 		});
