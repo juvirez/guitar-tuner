@@ -13,44 +13,42 @@ if (navigator.getMedia === undefined) {
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
 app.mic = {
-	audioContext: null,
-	analyser: null,
-	buf: null,
-	coef: 44000 / 2048,
+	bufferSize: 16384,
+	sampleRate: 44100,
+	coef: 44100 / 16384,
+	fft: null,
 
-	startAudition: function() {
+	startAudition: function(callback) {
 		navigator.getMedia({audio: true}, function(stream) {
-			app.mic.audioContext = new AudioContext();
-			var mediaStreamSource = app.mic.audioContext.createMediaStreamSource(stream);
-
-			app.mic.analyser = app.mic.audioContext.createAnalyser();
-			app.mic.analyser.fftSize = 2048;
-			mediaStreamSource.connect(app.mic.analyser);
-
-			app.mic.buf = new Uint8Array(app.mic.analyser.frequencyBinCount);
-
+			var that = app.mic;
+			that.fft = new FFT(that.bufferSize, that.sampleRate);
+			var audioContext = new AudioContext();
+			var audioSource = audioContext.createMediaStreamSource(stream);
+			var tuner = audioContext.createJavaScriptNode(that.bufferSize, 1, 1);
+			tuner.onaudioprocess = that.audioProcess;
+			audioSource.connect(tuner);
+			tuner.connect(audioContext.destination);
 		}, function(error) {
 			alert("getMedia Error: ", error);
 		});
 	},
-	
-	getFrequency: function() {
-		this.analyser.getByteFrequencyData(this.buf);
-		var maxI = this.buf[0];
-		var bufLen = this.buf.length;
-		for(var i = 1; i < bufLen; i++) {
-			if (this.buf[maxI] < this.buf[i]) {
+
+	audioProcess: function(e) {
+		var that = app.mic;
+		that.fft.forward(e.inputBuffer.getChannelData(0));
+		var freqs = that.fft.spectrum;
+		var maxI = 0, maxVal = -100;
+		for (var i = 0; i < freqs.length; i++) {
+			if (maxVal < freqs[i]) {
+				maxVal = freqs[i];
 				maxI = i;
 			}
 		}
-		return maxI * this.coef;
+		console.log(maxI * that.coef, maxVal);
 	}
 };
 
 
 $(function() {
 	app.mic.startAudition();
-	setInterval(function() {
-		console.log(app.mic.getFrequency());
-	}, 500);
 });
