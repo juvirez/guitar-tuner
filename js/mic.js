@@ -13,29 +13,31 @@ if (navigator.getMedia === undefined) {
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
 app.mic = {
-	bufferSize: 16384,
+	bufferSize: 16384 * 2,
 	sampleRate: 44100,
 	coef: 44100 / (16384*2),
 	fft: null,
 	callback: null,
-	lastBuf: null,
+	buffer: null,
 
 	startAudition: function(callback) {
 		var that = app.mic;
-		that.lastBuff = new Float32Array(that.bufferSize);
+		that.buffer = new Float32Array(that.bufferSize);
 		that.callback = callback;
 		navigator.getMedia({audio: true}, function(stream) {
-			that.fft = new FFT(2 * that.bufferSize, that.sampleRate);
+			that.fft = new FFT(that.bufferSize, that.sampleRate);
 			var audioContext = new AudioContext();
 			var audioSource = audioContext.createMediaStreamSource(stream);
+
 			audioContext.createScriptProcessor = (
 				audioContext.createJavaScriptNode ||
 				audioContext.createScriptProcessor);
-			var tuner = audioContext.createScriptProcessor(that.bufferSize, 1, 1);
+			var tuner = audioContext.createScriptProcessor(that.bufferSize / 2, 1, 1);
+
 			tuner.onaudioprocess = that.audioProcess;
 			audioSource.connect(tuner);
 			tuner.connect(audioContext.destination);
-			audioSource.connect(audioContext.destination);
+			//audioSource.connect(audioContext.destination);
 		}, function(error) {
 			alert("getMedia Error: ", error);
 		});
@@ -44,7 +46,12 @@ app.mic = {
 	audioProcess: function(e) {
 		var that = app.mic;
 		var data = e.inputBuffer.getChannelData(0);
-		that.fft.forward(Float32Concat(that.lastBuff, data));
+		var halfBufSize = that.bufferSize / 2;
+		for (var i = 0; i < halfBufSize; i++) {
+			that.buffer[i] = that.buffer[i + halfBufSize];
+			that.buffer[i + halfBufSize] = data[i];
+		}
+		that.fft.forward(that.buffer);
 		var freqs = that.fft.spectrum;
 		var maxI = 0, maxVal = freqs[maxI];
 		for (var i = 1; i < freqs.length; i++) {
@@ -53,7 +60,6 @@ app.mic = {
 				maxI = i;
 			}
 		}
-		that.lastBuff = data;
 		console.log(maxI * that.coef, maxVal);
 	}
 };
