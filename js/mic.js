@@ -12,65 +12,67 @@ if (navigator.getMedia === undefined) {
 
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
-app.mic = {
-	bufferSize: 16384 * 2,
-	sampleRate: 44100,
-	coef: 44100 / (16384*2),
-	fft: null,
-	callback: null,
-	buffer: null,
+(function() {
+	var sampleRate = 44100,
+		bufferSize = 32768,
+		coef = sampleRate / bufferSize,
+		bufferSizeScriptProcessor = bufferSize / 2,
 
-	startAudition: function(callback) {
-		var that = app.mic;
-		that.buffer = new Float32Array(that.bufferSize);
-		that.callback = callback;
-		navigator.getMedia({audio: true}, function(stream) {
-			that.fft = new FFT(that.bufferSize, that.sampleRate);
-			var audioContext = new AudioContext();
-			var audioSource = audioContext.createMediaStreamSource(stream);
+		fft = new FFT(bufferSize, sampleRate),
+		buffer = new Float32Array(bufferSize),
+		audioContext = new AudioContext(),
+		audioSource = null;
 
-			audioContext.createScriptProcessor = (
-				audioContext.createJavaScriptNode ||
-				audioContext.createScriptProcessor);
-			var tuner = audioContext.createScriptProcessor(that.bufferSize / 2, 1, 1);
+	audioContext.createScriptProcessor = (
+		audioContext.createJavaScriptNode ||
+		audioContext.createScriptProcessor);
 
-			tuner.onaudioprocess = that.audioProcess;
-			audioSource.connect(tuner);
-			tuner.connect(audioContext.destination);
-			//audioSource.connect(audioContext.destination);
-		}, function(error) {
-			alert("getMedia Error: ", error);
-		});
-	},
-
-	audioProcess: function(e) {
-		var that = app.mic;
+	function audioProcess(e) {
 		var data = e.inputBuffer.getChannelData(0);
-		var halfBufSize = that.bufferSize / 2;
-		for (var i = 0; i < halfBufSize; i++) {
-			that.buffer[i] = that.buffer[i + halfBufSize];
-			that.buffer[i + halfBufSize] = data[i];
+		for (var i = 0; i < bufferSizeScriptProcessor; i++) {
+			buffer[i] = buffer[i + bufferSizeScriptProcessor];
+			buffer[i + bufferSizeScriptProcessor] = data[i];
 		}
-		that.fft.forward(that.buffer);
-		var freqs = that.fft.spectrum;
-		var maxI = 0, maxVal = freqs[maxI];
-		for (var i = 1; i < freqs.length; i++) {
-			if (maxVal < freqs[i]) {
-				maxVal = freqs[i];
+		fft.forward(buffer);
+		var spectrum = fft.spectrum,
+			maxI = 0,
+			maxVal = spectrum[maxI];
+		for (var i = 1; i < spectrum.length; i++) {
+			if (maxVal < spectrum[i]) {
+				maxVal = spectrum[i];
 				maxI = i;
 			}
 		}
-		console.log(maxI * that.coef, maxVal);
+		console.log(maxI * coef);
 	}
-};
 
-function Float32Concat(first, second) {
-    var firstLength = first.length;
-    var result = new Float32Array(firstLength + second.length);
-    result.set(first);
-    result.set(second, firstLength);
-    return result;
-}
+	function Mic() {
+		var mute = true;
+
+		this.startAudition = function() {
+			navigator.getMedia({audio: true}, function(stream) {
+				audioSource = audioContext.createMediaStreamSource(stream);
+				var tuner = audioContext.createScriptProcessor(bufferSizeScriptProcessor, 1, 1);
+				tuner.onaudioprocess = audioProcess;
+				audioSource.connect(tuner);
+				tuner.connect(audioContext.destination);
+			}, function(error) {
+				alert("getMedia error: ", error);
+			});
+		};
+		this.muteToggle = function() {
+			mute = !mute;
+			if (mute) {
+				audioSource.disconnect(audioContext.destination);
+			} else {
+				audioSource.connect(audioContext.destination);
+			}
+			return mute;
+		};
+	}
+
+	app.mic = new Mic();
+})();
 
 $(function() {
 	app.mic.startAudition();
