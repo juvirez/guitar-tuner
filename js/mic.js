@@ -35,9 +35,9 @@ window.AudioContext = window.AudioContext || window.webkitAudioContext;
 		}
 		fft.forward(buffer);
 		var spectrum = fft.spectrum,
-			maxI = 0,
+			maxI = spectrum.length - 1,
 			maxVal = spectrum[maxI];
-		for (var i = 1; i < spectrum.length; i++) {
+		for (var i = maxI; i >= 0; i--) {
 			if (maxVal < spectrum[i]) {
 				maxVal = spectrum[i];
 				maxI = i;
@@ -69,11 +69,25 @@ window.AudioContext = window.AudioContext || window.webkitAudioContext;
 			}
 			return mute;
 		};
+		var osc = null;
+		this.startTest = function() {
+			osc = audioContext.createOscillator();
+			var tuner = audioContext.createScriptProcessor(bufferSizeScriptProcessor, 1, 1);
+			tuner.onaudioprocess = audioProcess;
+			osc.connect(tuner);
+			tuner.connect(audioContext.destination);
+			osc.start(audioContext.currentTime);
+		};
+		this.stopTest = function() {
+			osc.disconnect();
+			var array = Array.prototype.slice.call(buffer);
+			console.log(array.join(","));
+		};
 	}
 
 	app.mic = new Mic();
 })();
 
 $(function() {
-	app.mic.startAudition();
+	//	app.mic.startTest();
 });
