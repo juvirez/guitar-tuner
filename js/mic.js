@@ -52,7 +52,8 @@ window.AudioContext = window.AudioContext || window.webkitAudioContext;
 			callback(maxI * coef);
 		}
 
-		this.startAudition = function(callback) {
+		this.startAudition = function(_callback) {
+			callback = _callback;
 			navigator.getMedia({audio: true}, function(stream) {
 				audioSource = audioContext.createMediaStreamSource(stream);
 				var tuner = audioContext.createScriptProcessor(bufferSizeScriptProcessor, 1, 1);
