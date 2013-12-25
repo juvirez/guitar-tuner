@@ -13,43 +13,46 @@ if (navigator.getMedia === undefined) {
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
 (function() {
-	var sampleRate = 44100,
-		bufferSize = 32768,
-		coef = sampleRate / bufferSize,
-		bufferSizeScriptProcessor = bufferSize / 2,
-
-		fft = new FFT(bufferSize, sampleRate),
-		buffer = new Float32Array(bufferSize),
-		audioContext = new AudioContext(),
-		audioSource = null;
-
-	audioContext.createScriptProcessor = (
-		audioContext.createJavaScriptNode ||
-		audioContext.createScriptProcessor);
-
-	function audioProcess(e) {
-		var data = e.inputBuffer.getChannelData(0);
-		for (var i = 0; i < bufferSizeScriptProcessor; i++) {
-			buffer[i] = buffer[i + bufferSizeScriptProcessor];
-			buffer[i + bufferSizeScriptProcessor] = data[i];
-		}
-		fft.forward(buffer);
-		var spectrum = fft.spectrum,
-			maxI = spectrum.length - 1,
-			maxVal = spectrum[maxI];
-		for (var i = maxI; i >= 0; i--) {
-			if (maxVal < spectrum[i]) {
-				maxVal = spectrum[i];
-				maxI = i;
-			}
-		}
-		console.log(maxI * coef);
-	}
-
 	function Mic() {
-		var mute = true;
+		var sampleRate = 44100,
+			bufferSize = 32768,
+			coef = sampleRate / bufferSize,
+			bufferSizeScriptProcessor = bufferSize / 2,
 
-		this.startAudition = function() {
+			fft = new FFT(bufferSize, sampleRate),
+			buffer = new Float32Array(bufferSize),
+			audioContext = new AudioContext(),
+			audioSource = null,
+
+			mute = true,
+			callback = function(hz) {
+				console.log(hz);
+			};
+
+		audioContext.createScriptProcessor = (
+			audioContext.createJavaScriptNode ||
+			audioContext.createScriptProcessor);
+
+		function audioProcess(e) {
+			var data = e.inputBuffer.getChannelData(0);
+			for (var i = 0; i < bufferSizeScriptProcessor; i++) {
+				buffer[i] = buffer[i + bufferSizeScriptProcessor];
+				buffer[i + bufferSizeScriptProcessor] = data[i];
+			}
+			fft.forward(buffer);
+			var spectrum = fft.spectrum,
+				maxI = spectrum.length - 1,
+				maxVal = spectrum[maxI];
+			for (var i = maxI; i >= 0; i--) {
+				if (maxVal < spectrum[i]) {
+					maxVal = spectrum[i];
+					maxI = i;
+				}
+			}
+			callback(maxI * coef);
+		}
+
+		this.startAudition = function(callback) {
 			navigator.getMedia({audio: true}, function(stream) {
 				audioSource = audioContext.createMediaStreamSource(stream);
 				var tuner = audioContext.createScriptProcessor(bufferSizeScriptProcessor, 1, 1);
@@ -69,9 +72,15 @@ window.AudioContext = window.AudioContext || window.webkitAudioContext;
 			}
 			return mute;
 		};
+
+		function initCorrection() {
+
+		}
+		
 		var osc = null;
-		this.startTest = function() {
+		this.startTest = function(frequency) {
 			osc = audioContext.createOscillator();
+			osc.frequency.setValueAtTime(frequency, audioContext.currentTime);
 			var tuner = audioContext.createScriptProcessor(bufferSizeScriptProcessor, 1, 1);
 			tuner.onaudioprocess = audioProcess;
 			osc.connect(tuner);
@@ -83,6 +92,7 @@ window.AudioContext = window.AudioContext || window.webkitAudioContext;
 			var array = Array.prototype.slice.call(buffer);
 			console.log(array.join(","));
 		};
+		
 	}
 
 	app.mic = new Mic();
