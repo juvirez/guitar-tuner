@@ -14,15 +14,15 @@ window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
 (function() {
 	function Mic() {
-		var sampleRate = 44100,
+		var audioContext = new AudioContext(),
+			audioSource = null,
+
 			bufferSize = 32768,
-			coef = sampleRate / bufferSize,
+			coef = audioContext.sampleRate / bufferSize,
 			bufferSizeScriptProcessor = bufferSize / 2,
 
-			fft = new FFT(bufferSize, sampleRate),
+			fft = new FFT(bufferSize, audioContext.sampleRate),
 			buffer = new Float32Array(bufferSize),
-			audioContext = new AudioContext(),
-			audioSource = null,
 
 			mute = true,
 			callback = function(hz) {
@@ -53,13 +53,15 @@ window.AudioContext = window.AudioContext || window.webkitAudioContext;
 		}
 
 		this.startAudition = function(_callback) {
-			callback = _callback;
+			if (_callback !== undefined) {
+				callback = _callback;
+			}
 			navigator.getMedia({audio: true}, function(stream) {
 				audioSource = audioContext.createMediaStreamSource(stream);
-				var tuner = audioContext.createScriptProcessor(bufferSizeScriptProcessor, 1, 1);
-				tuner.onaudioprocess = audioProcess;
-				audioSource.connect(tuner);
-				tuner.connect(audioContext.destination);
+				var frequencyDetector = audioContext.createScriptProcessor(bufferSizeScriptProcessor, 1, 1);
+				frequencyDetector.onaudioprocess = audioProcess;
+				audioSource.connect(frequencyDetector);
+				frequencyDetector.connect(audioContext.destination);
 			}, function(error) {
 				alert("getMedia error: ", error);
 			});
@@ -73,32 +75,6 @@ window.AudioContext = window.AudioContext || window.webkitAudioContext;
 			}
 			return mute;
 		};
-
-		function initCorrection() {
-
-		}
-		
-		var osc = null;
-		this.startTest = function(frequency) {
-			osc = audioContext.createOscillator();
-			osc.frequency.setValueAtTime(frequency, audioContext.currentTime);
-			var tuner = audioContext.createScriptProcessor(bufferSizeScriptProcessor, 1, 1);
-			tuner.onaudioprocess = audioProcess;
-			osc.connect(tuner);
-			tuner.connect(audioContext.destination);
-			osc.start(audioContext.currentTime);
-		};
-		this.stopTest = function() {
-			osc.disconnect();
-			var array = Array.prototype.slice.call(buffer);
-			console.log(array.join(","));
-		};
-		
 	}
-
 	app.mic = new Mic();
 })();
-
-$(function() {
-	//	app.mic.startTest();
-});
