@@ -25,9 +25,7 @@ window.AudioContext = window.AudioContext || window.webkitAudioContext;
 			buffer = new Float32Array(bufferSize),
 
 			mute = true,
-			callback = function(hz) {
-				console.log(hz);
-			};
+			callbacks = [];
 
 		audioContext.createScriptProcessor = (
 			audioContext.createJavaScriptNode ||
@@ -49,12 +47,16 @@ window.AudioContext = window.AudioContext || window.webkitAudioContext;
 					maxI = i;
 				}
 			}
-			callback(maxI * coef);
+			_.each(callbacks, function(callback) { callback(); });
 		}
 
-		this.startAudition = function(_callback) {
-			if (_callback !== undefined) {
-				callback = _callback;
+		this.startAudition = function(callback) {
+			if (!_.isFunction(callback)) {
+				return false;
+			}
+			callbacks.push(callback);
+			if (audioSource) {
+				return true;
 			}
 			navigator.getMedia({audio: true}, function(stream) {
 				audioSource = audioContext.createMediaStreamSource(stream);
@@ -65,7 +67,9 @@ window.AudioContext = window.AudioContext || window.webkitAudioContext;
 			}, function(error) {
 				alert("getMedia error: ", error);
 			});
+			return true;
 		};
+
 		this.muteToggle = function() {
 			mute = !mute;
 			if (mute) {
