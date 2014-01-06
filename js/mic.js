@@ -47,7 +47,7 @@ window.AudioContext = window.AudioContext || window.webkitAudioContext;
 					maxI = i;
 				}
 			}
-			_.each(callbacks, function(callback) { callback(); });
+			_.each(callbacks, function(callback) { callback(maxI * coef); });
 		}
 
 		this.startAudition = function(callback) {
