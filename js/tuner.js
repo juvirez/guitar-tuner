@@ -25,6 +25,7 @@ var app = app || {};
 			});
 		},
 		frequencyProcess: function(frequency) {
+			//console.log(frequency);
 			this.set('frequency', frequency);
 			var minDiffI = 0,
 				minDiff = Math.abs(frequency - seminotes[0][0]);

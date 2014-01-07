@@ -2,9 +2,9 @@ var app = app || {};
 
 navigator.getMedia = (
 	navigator.getUserMedia ||
-    navigator.webkitGetUserMedia ||
-    navigator.mozGetUserMedia ||
-    navigator.msGetUserMedia);
+	navigator.webkitGetUserMedia ||
+	navigator.mozGetUserMedia ||
+	navigator.msGetUserMedia);
 
 if (navigator.getMedia === undefined) {
 	location.href = "browser_not_support.html";
