@@ -40,7 +40,6 @@ var app = app || {};
 			var note = seminotes[minDiffI][1];
 			this.set('note', note);
 
-			//calc cents
 			var cents = Math.round(1200 * Math.log(frequency / seminotes[minDiffI][0]));
 			this.set('cents', cents);
 

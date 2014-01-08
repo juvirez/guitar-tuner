@@ -2,15 +2,15 @@ var app = app || {};
 
 navigator.getMedia = (
 	navigator.getUserMedia ||
-    navigator.webkitGetUserMedia ||
-    navigator.mozGetUserMedia ||
-    navigator.msGetUserMedia);
-
-if (navigator.getMedia === undefined) {
-	location.href = "browser_not_support.html";
-}
+	navigator.webkitGetUserMedia ||
+	navigator.mozGetUserMedia ||
+	navigator.msGetUserMedia);
 
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
+
+if (navigator.getMedia === undefined || window.AudioContext === undefined) {
+	location.href = "browser_not_support.html";
+}
 
 (function() {
 	function Mic() {

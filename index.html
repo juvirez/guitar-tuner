@@ -1,72 +1,29 @@
 <!doctype html>
 <html>
-	<head>
-		<title>Guitar Tuner</title>
-		<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <head>
+        <title>Guitar Tuner</title>
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
         <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.0/jquery.cookie.min.js"></script>
-		<script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
-		<script src="http://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.0/backbone-min.js"></script>
-		<script src="js/dsp.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.0/backbone-min.js"></script>
+        <script src="js/dsp.js"></script>
         <script src="js/mic.js"></script>
         <script src="js/tuner.js"></script>
         <script src="js/tuner-view.js"></script>
-        <!--<link rel="stylesheet" type="text/css" href="css/styles.css">-->
-	</head>
-	<body>
+        <script src="js/scripts.js"></script>
+    </head>
+    <body>
+        <!--
         <center style="padding-top: 300px;">
             <h1 id="note"></h1>
             <div id="cents"></div>
         </center>
-        <!--
-        <div id="mainbox">
-            <div id="tablo">
-                <div id="scale">
-                    <div id="zero" class="mark"></div>
-                    <div id="n10" class="mark"></div>
-                    <div id="n20" class="mark"></div>
-                    <div id="n30" class="mark"></div>
-                    <div id="n40" class="mark"></div>
-                    <div id="n50" class="mark"></div>
-                    <div id="p10" class="mark"></div>
-                    <div id="p20" class="mark"></div>
-                    <div id="p30" class="mark"></div>
-                    <div id="p40" class="mark"></div>
-                    <div id="p50" class="mark"></div>
-                </div>
-                <div id="arrow"></div>
-                <div id="note" class="negative">
-                    <div id="tone">A</div>
-                </div>
-            </div>
-            <div id="fretboard">
-                <table>
-                    <tr>
-                        <td>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                        </td>
-                    </tr>
-                </table>
+        -->
+        <div id="tuner">
+            <div id="circle" class="green">
+                <div id="note"></div>
             </div>
         </div>
-        -->
-	</body>
+    </body>
 </html>
