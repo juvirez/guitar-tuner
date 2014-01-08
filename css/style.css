@@ -20,6 +20,7 @@ body {
 	-moz-border-radius: 35px;
 	-webkit-border-radius: 35px;
 	border-radius: 35px;
+	z-index: 1;
 }
 #circle.green {
 	background: #32d387;
@@ -35,6 +36,19 @@ body {
 	margin-bottom: -20px;
 	bottom: 50%;
 	width: 100%;
+}
+
+#arrow {
+	width: 2px;
+	height: 0;
+	border-left: 2px solid transparent;
+	border-right: 2px solid transparent;
+	border-bottom: 159px solid #ff6861;
+	z-index: 0;
+	position: absolute;
+	left: 50%;
+	margin-left: -3px;
+	top: 22px;
 }
 
 .ten-mark {
