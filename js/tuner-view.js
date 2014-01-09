@@ -39,7 +39,7 @@ $(function() {
 			var degree = cents * 2.4;
 			this.$arrow.stop(true, true);
 			this.$arrow.animate({
-					'border-spacing': degree
+					'text-ident': degree
 				}, {
 					step: function(now) {
 						var rotateDegree = 'rotate(' + now + 'deg)';
