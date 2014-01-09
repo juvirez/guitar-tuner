@@ -8,13 +8,7 @@ $(function() {
 			this.render();
 		},
 		render: function() {
-			var template = _.template(['<div class="<%= styleClass %>" style="',
-				'transform: rotate(<%= degree %>deg);',
-				'-webkit-transform: rotate(<%= degree %>deg);',
-				'-moz-transform: rotate(<%= degree %>deg);',
-				'-o-transform: rotate(<%= degree %>deg);',
-				'-ms-transform: rotate(<%= degree %>deg);',
-				'"></div'].join(''));
+			var rotateTemplate = _.template($('#rotate-template').html());
 			var degree = -120;
 			for (var i = -50; i <= 50; i += 2) {
 				var styleClass;
@@ -22,9 +16,16 @@ $(function() {
 					styleClass = 'mark';
 				} else {
 					styleClass = 'ten-mark';
-					
+					var markNumber = rotateTemplate({
+						'styleClass': 'mark-number',
+						'degree': degree,
+						value: i});
+					this.$el.prepend(markNumber);
 				}
-				var mark = template({'styleClass': styleClass, 'degree': degree});
+				var mark = rotateTemplate({
+					'styleClass': styleClass,
+					'degree': degree,
+					value: ''});
 				this.$el.prepend(mark);
 				degree = parseFloat((degree + 4.8).toFixed(1));
 			}

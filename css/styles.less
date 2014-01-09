@@ -9,9 +9,9 @@ body {
 }
 
 @globalRadius: 180px;
+@circleRadius: 35px;
 
 #circle {
-	@circleRadius: 35px;
 	position: relative;
 	top: @globalRadius - @circleRadius;
 	margin-left: auto;
@@ -49,22 +49,19 @@ body {
 	-ms-transform-origin: @x @y;
 	transform-origin: @x @y;
 }
-.transform-rotate (@degree){
-	@rotate: rotate(@degree);
-	-webkit-transform: @rotate;
-	-moz-transform: @rotate;
-	-ms-transform: @rotate;
-	-o-transform: @rotate;
-	transform: @rotate;
+
+.absolute-center (@w) {
+	position: absolute;
+	width: @w;
+	left: 50%;
+	margin-left: @w / -2;
+	text-align: center;
 }
 
 .mark (@w, @h, @offset: 0px) {
-	position: absolute;
-	width: @w;
+	.absolute-center(@w);
 	height: @h;
 	top: @offset;
-	left: 50%;
-	margin-left: @w / -2;
 	.transform-origin(@w/2, @globalRadius - @offset);
 }
 
@@ -84,14 +81,12 @@ body {
 	@w: 2px;
 	@offsetY: @tenMarkHeight + 2px;
 	@h: @globalRadius - @offsetY;
-	width: @w;
+	.absolute-center(@w);
 	height: 0;
 	border-left: @w solid transparent;
 	border-right: @w solid transparent;
 	border-bottom: @h solid #ff6861;
 	z-index: 0;
-	position: absolute;
-	left: 50%;
 	margin-left: -3px;
 	top: @offsetY;
 	.transform-origin(3px, @h);
@@ -100,14 +95,24 @@ body {
 .mark-number {
 	@top: @tenMarkHeight + 10px;
 	@w: 50px;
-	position: absolute;
-	left: 50%;
-	margin-left: @w / -2;
+	.absolute-center(@w);
 	font: 15px Arial;
 	color: #697586;
-	width: @w;
-	text-align: center;
 	top: @top;
 	.transform-origin(@w / 2, @globalRadius - @top);
 	z-index: -1;
+}
+
+#cents {
+	.absolute-center(50px);
+	font: 9px Arial;
+	color: #979ea9;
+	top: @globalRadius + @circleRadius + 10px;
+}
+
+#hz {
+	.absolute-center(200px);
+	top: @globalRadius + @circleRadius + 32px;
+	font: 12px Arial;
+	color: #697586;
 }
