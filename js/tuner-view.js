@@ -4,6 +4,7 @@ $(function() {
 		initialize: function() {
 			this.$note = $('#note');
 			this.$frequency = $('#frequency');
+			this.$arrow = $('#arrow');
 			this.listenTo(app.tuner, 'tick', this.tick);
 			this.render();
 		},
@@ -34,6 +35,24 @@ $(function() {
 		tick: function(frequency, note, cents) {
 			this.$note.html(this.noteFormat(note));
 			this.$frequency.html(Math.round(frequency));
+
+			var degree = cents * 2.4;
+			this.$arrow.stop(true, true);
+			this.$arrow.animate({
+					'border-spacing': degree
+				}, {
+					step: function(now) {
+						var rotateDegree = 'rotate(' + now + 'deg)';
+						$(this).css({
+							'-webkit-transform': rotateDegree,
+							'-moz-transform': rotateDegree,
+							'-o-transform': rotateDegree,
+							'-ms-transform': rotateDegree,
+							'transform': rotateDegree
+						});
+					},
+					duration: app.mic.getTickPeriod()
+				});
 		},
 		noteFormat: function(note) {
 			var res = /^[a-g](\d)/.exec(note);

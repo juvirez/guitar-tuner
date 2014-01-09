@@ -79,6 +79,11 @@ if (navigator.getMedia === undefined || window.AudioContext === undefined) {
 			}
 			return mute;
 		};
+
+		var tickPeriod = (bufferSizeScriptProcessor / audioContext.sampleRate) * 1000;
+		this.getTickPeriod = function() {
+			return tickPeriod;
+		};
 	}
 	app.mic = new Mic();
 })();
