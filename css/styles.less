@@ -1,0 +1,113 @@
+body {
+	background-color: #eeeeee;
+	font-family: Arial;
+	padding-top: 75px;
+}
+
+#tuner {
+	position: relative;
+}
+
+@globalRadius: 180px;
+
+#circle {
+	@circleRadius: 35px;
+	position: relative;
+	top: @globalRadius - @circleRadius;
+	margin-left: auto;
+	margin-right: auto;
+	width: @circleRadius * 2;
+	height: @circleRadius * 2;
+	.border-radius(@circleRadius);
+	z-index: 1;
+
+	&.green {
+		background: #32d387;	
+	}
+	&.red {
+		background: #ff6861;
+	}
+	#note {
+		position: absolute;
+		font-size: 30px;
+		text-align: center;
+		margin-bottom: -20px;
+		bottom: 50%;
+		width: 100%;
+	}
+}
+
+.border-radius (@radius) {
+	-webkit-border-radius: @radius;
+	-moz-border-radius: @radius;
+	border-radius: @radius;
+}
+.transform-origin (@x @y) {
+	-webkit-transform-origin: @x @y;
+	-moz-transform-origin: @x @y;
+	-o-transform-origin: @x @y;
+	-ms-transform-origin: @x @y;
+	transform-origin: @x @y;
+}
+.transform-rotate (@degree){
+	@rotate: rotate(@degree);
+	-webkit-transform: @rotate;
+	-moz-transform: @rotate;
+	-ms-transform: @rotate;
+	-o-transform: @rotate;
+	transform: @rotate;
+}
+
+.mark (@w, @h, @offset: 0px) {
+	position: absolute;
+	width: @w;
+	height: @h;
+	top: @offset;
+	left: 50%;
+	margin-left: @w / -2;
+	.transform-origin(@w/2, @globalRadius - @offset);
+}
+
+@tenMarkHeight: 20px;
+
+.ten-mark {
+	.mark(2px, @tenMarkHeight);
+	background-color: #445469;
+}
+
+.mark {
+	.mark(1px, 14px, 3px);
+	background-color: #dbdbdb;
+}
+
+#arrow {
+	@w: 2px;
+	@offsetY: @tenMarkHeight + 2px;
+	@h: @globalRadius - @offsetY;
+	width: @w;
+	height: 0;
+	border-left: @w solid transparent;
+	border-right: @w solid transparent;
+	border-bottom: @h solid #ff6861;
+	z-index: 0;
+	position: absolute;
+	left: 50%;
+	margin-left: -3px;
+	top: @offsetY;
+	.transform-origin(3px, @h);
+}
+
+.mark-number {
+	@top: @tenMarkHeight + 10px;
+	@w: 50px;
+	position: absolute;
+	left: 50%;
+	margin-left: @w / -2;
+	font: 15px Arial;
+	color: #697586;
+	width: @w;
+	text-align: center;
+	top: @top;
+	.transform-origin(@w / 2, @globalRadius - @top);
+	z-index: -1;
+}
