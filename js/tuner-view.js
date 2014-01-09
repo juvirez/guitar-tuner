@@ -36,14 +36,17 @@ $(function() {
 			this.$note.html(this.noteFormat(note));
 			this.$frequency.html(Math.round(frequency));
 
-			var degree = cents * 2.4;
+			var degree = cents * 2.4,
+				arrow = this.$arrow,
+				circle = $('#circle');
 			this.$arrow.stop(true, true);
 			this.$arrow.animate({
 					'text-ident': degree
 				}, {
 					step: function(now) {
+						(Math.abs(now / 2.4) <= 5) ? circle.addClass('green') : circle.removeClass('green');
 						var rotateDegree = 'rotate(' + now + 'deg)';
-						$(this).css({
+						arrow.css({
 							'-webkit-transform': rotateDegree,
 							'-moz-transform': rotateDegree,
 							'-o-transform': rotateDegree,
