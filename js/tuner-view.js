@@ -33,16 +33,16 @@ $(function() {
 		},
 		tick: function(frequency, note, cents) {
 			this.$note.html(this.noteFormat(note));
-			this.$frequency.html(frequency);
+			this.$frequency.html(Math.round(frequency));
 		},
 		noteFormat: function(note) {
 			var res = /^[a-g](\d)/.exec(note);
 			if (res) {
-				return note[0] + '<sup>' + res[0] + '</sup>' + (note[2] || '');
+				return note[0] + '<sup>' + res[1] + '</sup>' + (note[2] || '');
 			}
 			res = /^[A-G](\d)/.exec(note);
 			if (res) {
-				return note[0] + '<sub>' + res[0] + '</sub>' + (note[2] || '');
+				return note[0] + '<sub>' + res[1] + '</sub>' + (note[2] || '');
 			}
 			return note;
 		}
