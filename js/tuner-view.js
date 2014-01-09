@@ -8,33 +8,40 @@ $(function() {
 			this.render();
 		},
 		render: function() {
-			var rotate = function(degree) {
-				return ['transform: rotate(' + degree + 'deg);',
-					'-webkit-transform: rotate(' + degree + 'deg);',
-					'-moz-transform: rotate(' + degree + 'deg);',
-					'-o-transform: rotate(' + degree + 'deg);',
-					'-ms-transform: rotate(' + degree + 'deg);'].join('');
-			};
+			var template = _.template(['<div class="<%= styleClass %>" style="',
+				'transform: rotate(<%= degree %>deg);',
+				'-webkit-transform: rotate(<%= degree %>deg);',
+				'-moz-transform: rotate(<%= degree %>deg);',
+				'-o-transform: rotate(<%= degree %>deg);',
+				'-ms-transform: rotate(<%= degree %>deg);',
+				'"></div'].join(''));
 			var degree = -120;
 			for (var i = -50; i <= 50; i += 2) {
-				var el;
+				var styleClass;
 				if (i % 10) {
-					el = '<div class="mark" style="' + rotate(degree) + '"></div>';
+					styleClass = 'mark';
 				} else {
-					el = '<div class="ten-mark" style="' + rotate(degree) + '"></div>';
+					styleClass = 'ten-mark';
+					
 				}
-				this.$el.prepend(el);
+				var mark = template({'styleClass': styleClass, 'degree': degree});
+				this.$el.prepend(mark);
 				degree = parseFloat((degree + 4.8).toFixed(1));
 			}
 			return this;
 		},
 		tick: function(frequency, note, cents) {
 			this.$note.html(this.noteFormat(note));
-			this.$cents.html(cents);
+			this.$frequency.html(frequency);
 		},
 		noteFormat: function(note) {
-			if (/^[a-g]{1}1/.test(note)) {
-				return note[0] + "<sup>1</sup>" + (note[2] || "");
+			var res = /^[a-g](\d)/.exec(note);
+			if (res) {
+				return note[0] + '<sup>' + res[0] + '</sup>' + (note[2] || '');
+			}
+			res = /^[A-G](\d)/.exec(note);
+			if (res) {
+				return note[0] + '<sub>' + res[0] + '</sub>' + (note[2] || '');
 			}
 			return note;
 		}

@@ -79,3 +79,19 @@ body {
     -ms-transform-origin: 0.5px 176px;
     transform-origin: 0.5px 176px;
 }
+
+.mark-number {
+	position: absolute;
+	left: 50%;
+	margin-left: -25px;
+	font: 15px Arial;
+	color: #697586;
+	width: 50px;
+	text-align: center;
+	top: 30px;
+	-webkit-transform-origin: 25px 209px;
+    -moz-transform-origin: 25px 209px;
+    -o-transform-origin: 25px 209px;
+    -ms-transform-origin: 25px 209px;
+    transform-origin: 25px 209px;
+}
