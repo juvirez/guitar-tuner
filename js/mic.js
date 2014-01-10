@@ -6,11 +6,11 @@ navigator.getMedia = (
 	navigator.mozGetUserMedia ||
 	navigator.msGetUserMedia);
 
-if (navigator.getMedia === undefined) {
+window.AudioContext = window.AudioContext || window.webkitAudioContext;
+
+if (navigator.getMedia === undefined || window.AudioContext === undefined) {
 	location.href = "browser_not_support.html";
 }
-
-window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
 (function() {
 	function Mic() {
@@ -78,6 +78,11 @@ window.AudioContext = window.AudioContext || window.webkitAudioContext;
 				audioSource.connect(audioContext.destination);
 			}
 			return mute;
+		};
+
+		var tickPeriod = (bufferSizeScriptProcessor / audioContext.sampleRate) * 1000;
+		this.getTickPeriod = function() {
+			return tickPeriod;
 		};
 	}
 	app.mic = new Mic();
