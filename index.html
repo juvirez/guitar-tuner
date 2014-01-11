@@ -11,6 +11,7 @@
         <script src="js/mic.js" type="text/javascript"></script>
         <script src="js/tuner.js" type="text/javascript"></script>
         <script src="js/tuner-view.js" type="text/javascript"></script>
+        <script src="js/neck-view.js" type="text/javascript"></script>
     </head>
     <body>
         <div id="tuner">
@@ -18,8 +19,20 @@
                 <div id="note"></div>
             </div>
             <div id="arrow"></div>
-            <div id="cents">cents</div>
-            <div id="hz"><span id="frequency"></span> Hz</div>
+            <div id="cents">cent</div>
+            <div id="hz"><span id="frequency">0</span> Hz</div>
+            <div id="tablature">
+                <div id="freq-more"></div>
+                <div id="nut"></div>
+                <table>
+                    <tr><td>E</td><td id="e1"></td><td id="f1"></td><td id="f1s"></td><td id="g1"></td><td id="g1s"></td></tr>
+                    <tr><td>B</td><td id="b"></td><td id="c1"></td><td id="c1s"></td><td id="d1"></td><td id="d1s"></td></tr>
+                    <tr><td>G</td><td id="g"></td><td id="gs"></td><td id="a"><div class="point"></div></td><td id="as"></td><td></td></tr>
+                    <tr><td>D</td><td id="d"></td><td id="ds"></td><td id="e"></td><td id="f"></td><td id="fs"></td></tr>
+                    <tr><td>A</td><td id="A"></td><td id="As"></td><td id="B"></td><td id="c"></td><td id="cs"></td></tr>
+                    <tr><td>E<div id="freq-less"><div id="pointer"></div></div></td><td id="E"></td><td id="F"></td><td id="Fs"></td><td id="G"></td><td id="Gs"></td></tr>
+                </table>
+            </div>
         </div>
         <script type="text/template" id="rotate-template">
             <div class="<%= styleClass %>" style="-webkit-transform: rotate(<%= degree %>deg); -moz-transform: rotate(<%= degree %>deg); -o-transform: rotate(<%= degree %>deg); -ms-transform: rotate(<%= degree %>deg); transform: rotate(<%= degree %>deg);"><%= value %></div>
