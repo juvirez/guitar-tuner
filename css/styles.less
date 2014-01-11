@@ -12,11 +12,8 @@ body {
 @circleRadius: 35px;
 
 #circle {
-	position: relative;
+	.absolute-center(@circleRadius * 2);
 	top: @globalRadius - @circleRadius;
-	margin-left: auto;
-	margin-right: auto;
-	width: @circleRadius * 2;
 	height: @circleRadius * 2;
 	.border-radius(@circleRadius);
 	z-index: 1;
@@ -114,4 +111,72 @@ body {
 	top: @globalRadius + @circleRadius + 32px;
 	font: 12px Arial;
 	color: #697586;
+}
+
+#tablature {
+	.absolute-center(130px);
+	top: 2*@globalRadius - 90px;
+	table {
+		border-spacing: 0;
+		td {
+			border-left: 1px solid #aaa;
+			border-top: 1px solid #aaa;
+			width: 20px;
+			height: 12px;
+			position: relative;
+			padding: 1px;
+
+			&:last-child {
+				width: 5px;
+			}
+			&:first-child {
+				border: 0;
+				font: 9px Arial;
+				color: #7b7b7b;	
+				position: relative;
+				top: -6px;
+				text-align: center;
+				#pointer {
+					left: -5px;
+					top: 1px;
+				}
+			}
+			&:nth-child(2) #pointer {
+				left: -6px;
+			}
+
+			.point {
+				width: 8px;
+				height: 8px;
+				background: #cdcdcd;
+				.border-radius(4px);
+				margin: auto;
+			}
+		}
+		tr:last-child td {
+			border-left: 0;
+		}
+	}
+	#nut {
+		position: absolute;
+		width: 4px;
+		height: 81px;
+		top: -3px;
+		left: 20px;
+		background-color: #aaa;
+		.border-radius(2px);
+	}
+	#pointer {
+		width: 10px;
+		height: 10px;
+		background: #7b7b7b;
+		.border-radius(5px);
+		position: absolute;
+		left: -16px;
+		top: -5px;
+	}
+	#freq-more {
+		position: absolute;
+		right: -15px;
+	}
 }
