@@ -1,5 +1,5 @@
 $(function() {
-	var tuner = Backbone.View.extend({
+	var Tuner = Backbone.View.extend({
 		el: '#tuner',
 		initialize: function() {
 			this.$note = $('#note');
@@ -69,5 +69,5 @@ $(function() {
 			return note;
 		}
 	});
-	app.tunerView = new tuner();
+	app.tunerView = new Tuner();
 });
